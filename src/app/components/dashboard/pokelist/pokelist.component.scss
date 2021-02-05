@@ -1,0 +1,35 @@
+.mat-form-field {
+    margin-right: 12px;
+}
+
+// card
+  
+  section:not(:last-of-type) {
+    margin-bottom: 24px;
+  }
+  
+  
+  .example-card {
+    width: 300px;
+    float: left;
+    margin: 0px 10px 10px;
+  }
+
+  .spacer{
+    flex: 1 1 auto;
+  }
+  .example-header-image {
+    background-size: cover;
+  }
+  
+//   
+pagination-controls {
+    text-align: center;
+}
+
+.mat-paginator {
+  background: rgb(233 242 251);
+}
+.mat-icon{
+  color: #1562fc;
+}

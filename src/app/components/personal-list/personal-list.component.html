@@ -1,0 +1,11 @@
+<app-pokemoncard *ngIf="enableView"
+  [dataList]="personalData" 
+  (onclickEventredirect)="redirecttoDetailPage($event)"
+  (onclickEventfirsticon)="addtoWishlist($event)" 
+  [iconColorfirst]="'#1562fc'" 
+  [materialIconfirst]="'turned_in'"
+  (onclickEventsecondicon)="deletefromPersonallist($event)"
+  [iconColorsecond]="'#dc3545'" 
+  [materialIconsecond]="'delete'">
+</app-pokemoncard>
+<div class="row card shadow p-3 m-3" *ngIf="!enableView"><h2>Personal List empty!. Add items to your Personal List</h2></div>

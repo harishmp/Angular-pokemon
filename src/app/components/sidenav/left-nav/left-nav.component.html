@@ -1,0 +1,25 @@
+<div class="sidenav_container" [@onSideNavChange]="sideNavState ? 'open' : 'close'" >
+    <div fxLayout="column" fxLayoutGap="10px" style="height: 100%;">
+  
+      <div>
+        <mat-nav-list>
+          <ng-container *ngFor="let page of pages">
+            <a mat-list-item [routerLink]="[ page.link ]"
+            [routerLinkActive]="'active'">
+              <mat-icon style="padding-right:5px;">{{page?.icon}}</mat-icon>
+              <span [@animateText]="linkText ? 'show' : 'hide'">{{ page?.name }} </span>
+            </a>
+          </ng-container>
+          
+        </mat-nav-list>
+      </div>
+    </div>
+  
+    <span class="spacer"></span>
+    <div fxLayout="row" fxLayoutAlign="end center" style="padding: 0px 10px;">
+      <button mat-icon-button (click)="onSinenavToggle()">
+        <mat-icon *ngIf="sideNavState">arrow_left</mat-icon>
+        <mat-icon *ngIf="!sideNavState">arrow_right</mat-icon>
+      </button>
+    </div>
+  </div>
