@@ -95,6 +95,8 @@ export class PokelistComponent implements OnInit {
 
   // pagination event
   getServerData(event?:PageEvent){
+    console.log('this.pageIndex', event.pageIndex)
+    this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.offset = event.pageIndex * 10;
     this.result = [];

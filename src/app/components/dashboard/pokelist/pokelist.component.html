@@ -4,7 +4,7 @@
       <mat-form-field appearance="outline" style="width: 100%;max-width: 500px;">
         <mat-label>Search Pokeman by fullname (Api call)</mat-label>
         <input matInput (keyup)="applySearch($event)" [(ngModel)]="filterkey">
-        <mat-icon matSuffix (click)="clearSearch()" style="cursor: pointer;color: red;">delete</mat-icon>
+        <mat-icon matSuffix (click)="clearSearch()" style="cursor: pointer;">close</mat-icon>
       </mat-form-field>
     </div>
     <div class="col-md-6 text-right" *ngIf="enablelistView">
