@@ -40,13 +40,20 @@ export class WishlistComponent implements OnInit {
 
   addtoPersonallist($event) {
     let personallist = JSON.parse(localStorage.getItem('personallist'));
-    let afterListfilter = personallist.filter(item => item.id == $event.id);
-    if(afterListfilter.length == 0){
+    if(personallist != null){
+      let afterListfilter = personallist.filter(item => item.id == $event.id);
+      if(afterListfilter.length == 0){
+        personallist.push($event)
+        localStorage.setItem('personallist', JSON.stringify(personallist)); 
+        this.openSnackBar('Successfully added to Personal list', 'pizza-party');
+      } else {
+        this.openSnackBar('Already added to Personal list', 'pizza-party');
+      }
+    } else {
+      personallist = [];
       personallist.push($event)
       localStorage.setItem('personallist', JSON.stringify(personallist)); 
-      this.openSnackBar('Succussfully added to Personal list', 'pizza-party');
-    } else {
-      this.openSnackBar('Already added to Personal list', 'pizza-party');
+      this.openSnackBar('Successfully added to Personal list', 'pizza-party');
     }
   }
 

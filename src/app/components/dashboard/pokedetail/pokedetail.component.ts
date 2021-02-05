@@ -58,18 +58,14 @@ export class PokedetailComponent implements OnInit {
   getMoves(data) {
     data.moves.forEach(responsemove => {
       this.dataService.getPokeMovesStats(responsemove.move.url).subscribe((result: any) => this.resultmove.push(result.json()),
-      err => {
-        console.log('In Error Block---', err._body + ' ' + err.status);
-      });
+      err => console.log('In Error Block---', err._body + ' ' + err.status));
     });
   }
 
   getStats(data) {
     data.stats.forEach(responsestat => {
       this.dataService.getPokeMovesStats(responsestat.stat.url).subscribe((result: any) => this.resultstat.push(result.json()),
-      err => {
-        console.log('In Error Block---', err._body + ' ' + err.status);
-      });
+      err => console.log('In Error Block---', err._body + ' ' + err.status));
     });
   }
 }

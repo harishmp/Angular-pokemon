@@ -55,15 +55,9 @@ export class PokelistComponent implements OnInit {
             this.pageSize = Number(finalParseUrl[1]);
             this.offset = Number(finalParseUrl[2]);
             this.callApi(this.pageSize, this.offset);
-          } else {
-            this.callApi(this.pageSize, this.offset);
-          }
-        } else {
-          this.callApi(this.pageSize, this.offset);
-        }
-      } else {
-        this.callApi(this.pageSize, this.offset);
-      }
+          } else this.callApi(this.pageSize, this.offset);
+        } else this.callApi(this.pageSize, this.offset);
+      } else this.callApi(this.pageSize, this.offset);
     })
   }
 
@@ -75,14 +69,10 @@ export class PokelistComponent implements OnInit {
       this.enableView = true;
       this.isLoading = false;
       this.enablelistView = true;
-      if(this.length > 0) {
-        this.enablePagination = true;
-      }
+      if(this.length > 0) this.enablePagination = true;
       listresponsedata.results.forEach(result => {
         this.dataService.getPokeApiDetail(result.name).subscribe((detailresponse: any) => this.result.push(detailresponse.json()),
-        err => {
-          console.log('In Error Block---', err._body + ' ' + err.status);
-        });
+        err => console.log('In Error Block---', err._body + ' ' + err.status));
       });
     },
     err => {
@@ -119,7 +109,7 @@ export class PokelistComponent implements OnInit {
       err => {
         this.enablelistView = false;
         this.enablePagination = false;
-        this.errorMessage = err.status + ': ' + err._body;
+        this.errorMessage = err._body;
         console.log('In Error Block---', err._body + ' ' + err.status);
       });
     } else {
@@ -141,11 +131,8 @@ export class PokelistComponent implements OnInit {
   // Filter result view handler
   applyfilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-    if(filterValue.length > 0) {
-      this.enablePagination = false;
-    } else {
-      this.enablePagination = true;
-    }
+    if(filterValue.length > 0) this.enablePagination = false;
+    else this.enablePagination = true;
   }
 
   redirecttoDetailPage(data){
@@ -160,15 +147,13 @@ export class PokelistComponent implements OnInit {
       if(val.length == 0){
         this.wishlist.push(data)
         localStorage.setItem('wishlist', JSON.stringify(this.wishlist)); 
-        this.openSnackBar('Succussfully added to Wishlist', 'pizza-party');
-      } else {
-        this.openSnackBar('Already added to Wishlist', 'pizza-party');
-      }
+        this.openSnackBar('Successfully added to Wishlist', 'pizza-party');
+      } else this.openSnackBar('Already added to Wishlist', 'pizza-party');
     } else {
       this.wishlist = [];
       this.wishlist.push(data)
       localStorage.setItem('wishlist', JSON.stringify(this.wishlist)); 
-      this.openSnackBar('Succussfully added to Wishlist', 'pizza-party');
+      this.openSnackBar('Successfully added to Wishlist', 'pizza-party');
     }
   }
 
@@ -179,15 +164,13 @@ export class PokelistComponent implements OnInit {
       if(val.length == 0){
         this.personallist.push(data)
         localStorage.setItem('personallist', JSON.stringify(this.personallist)); 
-        this.openSnackBar('Succussfully added to Personal list', 'pizza-party');
-      } else {
-        this.openSnackBar('Already added to Personal list', 'pizza-party');
-      }
+        this.openSnackBar('Successfully added to Personal list', 'pizza-party');
+      } else this.openSnackBar('Already added to Personal list', 'pizza-party');
     } else {
       this.personallist = [];
       this.personallist.push(data)
       localStorage.setItem('personallist', JSON.stringify(this.personallist)); 
-      this.openSnackBar('Succussfully added to Personal list', 'pizza-party');
+      this.openSnackBar('Successfully added to Personal list', 'pizza-party');
     }
   }
 
