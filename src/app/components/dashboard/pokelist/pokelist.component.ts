@@ -130,6 +130,7 @@ export class PokelistComponent implements OnInit {
   }
 
   clearSearch(){
+    this.pageIndex = 0;
     this.filterkey = '';
     this.result = [];
     this.pageSize = 10;
