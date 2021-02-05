@@ -58,7 +58,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
     // MatButtonToggleModule,
     MatCardModule,
     // MatCheckboxModule,
-    // MatChipsModule,
+    MatChipsModule,
     // MatStepperModule,
     // MatDatepickerModule,
     MatDialogModule,
