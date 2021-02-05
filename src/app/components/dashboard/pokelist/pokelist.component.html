@@ -1,7 +1,7 @@
 <div class="col-md-12 pt-3 pb-3">
   <div class="row" *ngIf="enableView">{{previousUrl}}
     <div class="col-md-6">
-      <mat-form-field appearance="outline" style="width: 100%;max-width: 500px;">
+      <mat-form-field appearance="outline">
         <mat-label>Search Pokeman by fullname (Api call)</mat-label>
         <input matInput (keyup)="applySearch($event)" [(ngModel)]="filterkey">
         <mat-icon matSuffix (click)="clearSearch()" style="cursor: pointer;">close</mat-icon>
@@ -9,7 +9,7 @@
     </div>
     <div class="col-md-6 text-right" *ngIf="enablelistView">
       <!-- Filter result in frontent using custom pipe -->
-      <mat-form-field appearance="outline" style="width: 100%;max-width: 500px;">
+      <mat-form-field appearance="outline">
         <mat-label>Search within listed result</mat-label>
         <input matInput [(ngModel)]="searchkey" (keyup)="applyfilter($event)">
         <mat-icon matSuffix>search</mat-icon>

@@ -18,11 +18,8 @@ export class WishlistComponent implements OnInit {
 
   ngOnInit(): void {
     this.wishlistData = JSON.parse(localStorage.getItem("wishlist"));
-    if(this.wishlistData != null){
-      if(this.wishlistData.length > 0) {
-      this.enableView = true;
-      }
-    }
+    if(this.wishlistData != null)
+    if(this.wishlistData.length > 0) this.enableView = true;
   }
 
   redirecttoDetailPage(data){
@@ -31,9 +28,7 @@ export class WishlistComponent implements OnInit {
 
   deletefromWishlist($event) {
     this.wishlistData = this.wishlistData.filter(item => item.id != $event.id);
-    if(this.wishlistData.length == 0){
-      this.enableView = false;
-    }
+    if(this.wishlistData.length == 0) this.enableView = false;
     localStorage.setItem('wishlist', JSON.stringify(this.wishlistData));
     this.openSnackBar('Deleted from wishlist', 'pizza-party');
   }
@@ -46,9 +41,7 @@ export class WishlistComponent implements OnInit {
         personallist.push($event)
         localStorage.setItem('personallist', JSON.stringify(personallist)); 
         this.openSnackBar('Successfully added to Personal list', 'pizza-party');
-      } else {
-        this.openSnackBar('Already added to Personal list', 'pizza-party');
-      }
+      } else this.openSnackBar('Already added to Personal list', 'pizza-party');
     } else {
       personallist = [];
       personallist.push($event)
