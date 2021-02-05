@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/services/data.service';
-import { filter } from 'rxjs/operators';
-import { pairwise } from 'rxjs/operators';
+import { NavigationService } from 'src/services/navigation.service';
 
 @Component({
   selector: 'app-pokedetail',
@@ -28,11 +27,9 @@ export class PokedetailComponent implements OnInit {
   enableView = false;
   isLoading = false;
 
-  constructor(private activatedRouter: ActivatedRoute, private dataService: DataService, private router: Router) {
+  constructor(private dataService: DataService, private router: Router, public navigation: NavigationService, private activatedRouter: ActivatedRoute) {
     // url params
     this.activatedRouter.params.subscribe(params => this.getPokemondetail(params['id']));
-    // back to previous page router
-    this.router.events.pipe(filter((e: any) => e instanceof RoutesRecognized), pairwise()).subscribe((e: any) => localStorage.setItem('previousUrl', e[0].urlAfterRedirects));
   }
 
   ngOnInit(): void {
@@ -74,9 +71,5 @@ export class PokedetailComponent implements OnInit {
         console.log('In Error Block---', err._body + ' ' + err.status);
       });
     });
-  }
-
-  back() {
-    this.router.navigate([localStorage.getItem('previousUrl')]);
   }
 }

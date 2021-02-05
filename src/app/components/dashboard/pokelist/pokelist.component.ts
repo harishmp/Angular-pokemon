@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { SnackbarComponent } from 'src/app/shared/snackbar/snackbar.component';
 import { DataService } from 'src/services/data.service';
+import { UrlService } from 'src/services/url.service';
 
 @Component({
   selector: 'app-pokelist',
@@ -20,6 +21,7 @@ export class PokelistComponent implements OnInit {
   pageEvent: PageEvent;
   page = 1;
   totalPokemons: number;
+  pageIndex: number;
 
   offset = 0;
   result = [];
@@ -32,12 +34,37 @@ export class PokelistComponent implements OnInit {
   enablelistView = false;
   isLoading = false;
   errorMessage;
+  previousUrl: string = null;
 
-  constructor(public dataService: DataService, private router: Router, public snackBar: MatSnackBar) { 
+  constructor(public dataService: DataService, private router: Router, public snackBar: MatSnackBar, private urlService: UrlService) { 
   }
 
   ngOnInit(): void {
-    this.callApi(this.pageSize, this.offset);
+    this.parseUrl();
+  }
+
+  // for maintaining page state
+  parseUrl(){
+    this.urlService.previousUrl$.subscribe(url => {
+      if(url != undefined){
+        let parseUrl = url.split("/");
+        if(parseUrl[3] != undefined){
+          var finalParseUrl = parseUrl[3].split("%3F");
+          if(finalParseUrl[1] != undefined) {
+            this.pageIndex = Number(finalParseUrl[2])/10;
+            this.pageSize = Number(finalParseUrl[1]);
+            this.offset = Number(finalParseUrl[2]);
+            this.callApi(this.pageSize, this.offset);
+          } else {
+            this.callApi(this.pageSize, this.offset);
+          }
+        } else {
+          this.callApi(this.pageSize, this.offset);
+        }
+      } else {
+        this.callApi(this.pageSize, this.offset);
+      }
+    })
   }
 
   callApi(limit, offset) {
@@ -120,6 +147,7 @@ export class PokelistComponent implements OnInit {
 
   redirecttoDetailPage(data){
     this.router.navigate([`/dashboard/poke-detail/${data.id}?${this.pageSize}?${this.offset}`]);
+    // this.router.navigate([`/dashboard/poke-detail/${data.id}`]);
   }
 
   addtoWishlist(data) {

@@ -1,5 +1,5 @@
 <div class="col-md-12 pt-3 pb-3">
-  <div class="row" *ngIf="enableView">
+  <div class="row" *ngIf="enableView">{{previousUrl}}
     <div class="col-md-6">
       <mat-form-field appearance="outline" style="width: 100%;max-width: 500px;">
         <mat-label>Search Pokeman by fullname (Api call)</mat-label>
@@ -32,10 +32,12 @@
     </div>
     <div class="card shadow col-md-12 p-3" *ngIf="!enablelistView && !isLoading"><h2>{{errorMessage}}</h2></div>
     <div *ngIf="enablePagination" class="card shadow col-md-12 p-0 mt-3">
-      <mat-paginator [length]="length"
+      <mat-paginator 
+                    [length]="length"
+                    [pageIndex]="pageIndex"
                    [pageSize]="pageSize"
                    [pageSizeOptions]="pageSizeOptions"
-                   (page)="getServerData($event)">
+                   (page)="pageEvent = getServerData($event)">
       </mat-paginator>
     </div>
   </div>

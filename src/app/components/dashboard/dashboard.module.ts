@@ -11,6 +11,7 @@ import { PokelistComponent } from './pokelist/pokelist.component';
 import { SnackbarComponent } from 'src/app/shared/snackbar/snackbar.component';
 import { FilterdatalistPipe } from 'src/app/pipe/filterdatalist.pipe';
 import { FormsModule } from '@angular/forms';
+import { NavigationService } from 'src/services/navigation.service';
 
 
 @NgModule({
@@ -22,6 +23,6 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     HttpModule
   ],
-  providers: [DataService]
+  providers: [DataService, NavigationService]
 })
 export class DashboardModule { }
