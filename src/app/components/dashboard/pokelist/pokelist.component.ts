@@ -3,7 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { SnackbarComponent } from 'src/app/shared/snackbar/snackbar.component';
-import { PokemonList, PokemonDetailbyName } from 'src/app/typed';
+import { PokemonList, PokemonDetailbyName, PokemonDetailLocalStorage } from 'src/app/typed';
 import { DataService } from 'src/services/data.service';
 import { UrlService } from 'src/services/url.service';
 
@@ -22,8 +22,8 @@ export class PokelistComponent implements OnInit {
   offset: number = 0;
   result = new Array<PokemonList>();
   resultFinal= new Array<PokemonDetailbyName>();
-  wishlist = [];
-  personallist = []
+  wishlist: Array<PokemonDetailLocalStorage> = [];
+  personallist: Array<PokemonDetailLocalStorage> = []
   searchkey: string = null;
   filterkey: string = null;
   enablePagination: boolean = false;
@@ -92,11 +92,11 @@ export class PokelistComponent implements OnInit {
 
   // pagination event
   getServerData(event?:PageEvent){
-    console.log('this.pageIndex', event.pageIndex)
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.offset = event.pageIndex * 10;
     this.result = [];
+    this.resultFinal = [];
     this.callApi(this.pageSize, this.offset);
   }
 
@@ -105,6 +105,7 @@ export class PokelistComponent implements OnInit {
     this.searchkey = '';
     const searchValue = (event.target as HTMLInputElement).value.toLowerCase();
     this.result = [];
+    this.resultFinal = [];
     if(searchValue.length > 0) {
       this.dataService.getPokeApiDetail(searchValue).subscribe((detailresponse: any) => { 
         let detailresponsedata = detailresponse.json();
@@ -130,6 +131,7 @@ export class PokelistComponent implements OnInit {
     this.pageIndex = 0;
     this.filterkey = '';
     this.result = [];
+    this.resultFinal = [];
     this.pageSize = 10;
     this.offset = 0;
     this.callApi(this.pageSize, this.offset);
@@ -142,12 +144,12 @@ export class PokelistComponent implements OnInit {
     else this.enablePagination = true;
   }
 
-  redirecttoDetailPage(data){
+  redirecttoDetailPage(data: PokemonDetailLocalStorage){
     this.router.navigate([`/dashboard/poke-detail/${data.id}?${this.pageSize}?${this.offset}`]);
     // this.router.navigate([`/dashboard/poke-detail/${data.id}`]);
   }
 
-  addtoWishlist(data) {
+  addtoWishlist(data: PokemonDetailLocalStorage) {
     this.wishlist = JSON.parse(localStorage.getItem('wishlist'));
     if(this.wishlist != null){
       let val = this.wishlist.filter(item => item.id == data.id);
@@ -164,7 +166,7 @@ export class PokelistComponent implements OnInit {
     }
   }
 
-  addtoPersonallist(data){
+  addtoPersonallist(data: PokemonDetailLocalStorage){
     this.personallist = JSON.parse(localStorage.getItem('personallist'));
     if(this.personallist != null){
       let val = this.personallist.filter(item => item.id == data.id);
