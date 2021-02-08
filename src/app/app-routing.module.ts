@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'personallist',
     loadChildren: () => import('./components/personal-list/personal-list.module').then(m => m.PersonalListModule)
   },
+  {
+    path: 'change-detection',
+    loadChildren: () => import('./components/change-detection/change-detection.module').then(m => m.ChangeDetectionModule)
+  },
   { path: '',  redirectTo: 'dashboard', pathMatch: 'full'},
   { path: '**',  redirectTo: 'dashboard'}
 ];

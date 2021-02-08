@@ -7,7 +7,6 @@ import { HeaderComponent } from './components/sidenav/header/header.component';
 import { LeftNavComponent } from './components/sidenav/left-nav/left-nav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
-import { UrlService } from 'src/services/url.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +20,7 @@ import { UrlService } from 'src/services/url.service';
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [UrlService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

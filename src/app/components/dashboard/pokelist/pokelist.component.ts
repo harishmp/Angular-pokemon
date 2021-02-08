@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {PageEvent} from '@angular/material/paginator';
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { SnackbarComponent } from 'src/app/shared/snackbar/snackbar.component';
+import { PokemonList, PokemonDetailbyName } from 'src/app/typed';
 import { DataService } from 'src/services/data.service';
 import { UrlService } from 'src/services/url.service';
 
@@ -14,26 +15,22 @@ import { UrlService } from 'src/services/url.service';
 export class PokelistComponent implements OnInit {
   // material paginator
   length: number;
-  pageSize = 10;
+  pageSize: number = 10;
   pageSizeOptions: number[] = [10, 20, 50, 100];
-
-  // paginator
-  pageEvent: PageEvent;
-  page = 1;
-  totalPokemons: number;
   pageIndex: number;
 
-  offset = 0;
-  result = [];
+  offset: number = 0;
+  result = new Array<PokemonList>();
+  resultFinal= new Array<PokemonDetailbyName>();
   wishlist = [];
   personallist = []
-  searchkey;
-  filterkey;
-  enablePagination = false;
-  enableView = false;
-  enablelistView = false;
-  isLoading = false;
-  errorMessage;
+  searchkey: string = null;
+  filterkey: string = null;
+  enablePagination: boolean = false;
+  enableView: boolean = false;
+  enablelistView: boolean = false;
+  isLoading: boolean = false;
+  errorMessage: string = null;
   previousUrl: string = null;
 
   constructor(public dataService: DataService, private router: Router, public snackBar: MatSnackBar, private urlService: UrlService) { 
@@ -61,18 +58,28 @@ export class PokelistComponent implements OnInit {
     })
   }
 
-  callApi(limit, offset) {
+  callApi(limit: number, offset: number) {
     this.isLoading = true;
     this.dataService.getPokeApiList(limit, offset).subscribe((listresponse: any) => {   
-      let listresponsedata = listresponse.json();
-      this.length = listresponsedata.count;
+      this.length = listresponse.count;
       this.enableView = true;
       this.isLoading = false;
       this.enablelistView = true;
       if(this.length > 0) this.enablePagination = true;
-      listresponsedata.results.forEach(result => {
-        this.dataService.getPokeApiDetail(result.name).subscribe((detailresponse: any) => this.result.push(detailresponse.json()),
-        err => console.log('In Error Block---', err._body + ' ' + err.status));
+      listresponse.results.map(item => {
+        return new PokemonList( 
+          item.name,
+          item.url
+        )
+      });
+      listresponse.results.map(item => {
+        this.dataService.getPokeApiDetail(item.name).subscribe((detailresponse: any) => { 
+          this.resultFinal.push(new PokemonDetailbyName( 
+            detailresponse.name,
+            detailresponse.id,
+            detailresponse.sprites)
+          );
+        }, err => console.log('In Error Block---', err._body + ' ' + err.status));
       });
     },
     err => {

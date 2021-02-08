@@ -6,14 +6,14 @@
     <div class="col-md-3 mb-3" style="min-width: 250px;">
       <mat-card class="cardbg">
         <mat-card-header>
-          <img mat-card-avatar class="header-image" src="{{pokemonImg}}">
+          <img mat-card-avatar class="header-image" src="{{pokemonDetails.sprites}}">
           <mat-card-title>{{pokemonDetails.name}}</mat-card-title>
           <mat-card-subtitle>ID: {{pokemonDetails.id}}</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image class="p-5" src="{{pokemonImgbig}}" alt="pokemonDetails">
+        <img mat-card-image class="p-5" src="{{pokemonDetails.dream_world}}" alt="'pokemonDetails'">
         <mat-card-content>
           <mat-chip-list>
-            <mat-chip color="primary">Type: {{pokemonType}}</mat-chip>
+            <mat-chip color="primary">Type: {{pokemonDetails.types}}</mat-chip>
             <mat-chip color="primary">Height: {{pokemonDetails.height}}</mat-chip>
             <mat-chip color="primary">Weight: {{pokemonDetails.weight}}</mat-chip>
             <mat-chip color="primary">Base Experience: {{pokemonDetails.base_experience}}</mat-chip>
@@ -37,7 +37,7 @@
             <tbody>
               <tr *ngFor="let data of resultmove">
                 <td>{{data.name}}</td>
-                <td>{{data.type['name']}}</td>
+                <td>{{data.type}}</td>
                 <td>
                   <mat-progress-bar
                       class="example-margin"

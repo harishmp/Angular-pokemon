@@ -24,6 +24,7 @@ export class LeftNavComponent implements OnInit {
     {name: 'Dashboard', link:'dashboard/poke-list', icon: 'computer'},
     {name: 'Wishlist', link:'wishlist', icon: 'turned_in'},
     {name: 'Personal list', link:'personallist', icon: 'view_list'},
+    {name: 'change Detection', link:'change-detection', icon: 'edit'}
   ]
 
   constructor(private _sidenavService: SidenavService) { }

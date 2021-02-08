@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { SidenavService } from 'src/services/sidenav.service';
-import { onMainContentChange } from './components/sidenav/Left-nav/animations';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { UrlService } from 'src/services/url.service';

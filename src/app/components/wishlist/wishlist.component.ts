@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { SnackbarComponent } from 'src/app/shared/snackbar/snackbar.component';
+import { PokemonDetailLocalStorage } from 'src/app/typed';
 
 @Component({
   selector: 'app-wishlist',
@@ -10,30 +11,37 @@ import { SnackbarComponent } from 'src/app/shared/snackbar/snackbar.component';
 })
 export class WishlistComponent implements OnInit {
 
-  wishlistData = [];
-  enableView = false;
+  wishlistData: Array<PokemonDetailLocalStorage> = [];
+  enableView: boolean = false;
 
   constructor(private router: Router, public snackBar: MatSnackBar) { 
   }
 
   ngOnInit(): void {
-    this.wishlistData = JSON.parse(localStorage.getItem("wishlist"));
+    let wishlistData = JSON.parse(localStorage.getItem("wishlist"));
+    wishlistData.map(item => {
+        this.wishlistData.push(new PokemonDetailLocalStorage( 
+          item.name,
+          item.id,
+          item.sprites)
+        );
+    });
     if(this.wishlistData != null)
     if(this.wishlistData.length > 0) this.enableView = true;
   }
 
-  redirecttoDetailPage(data){
+  redirecttoDetailPage(data: PokemonDetailLocalStorage){
     this.router.navigate([`dashboard/poke-detail/${data.id}`]);
   }
 
-  deletefromWishlist($event) {
+  deletefromWishlist($event: PokemonDetailLocalStorage) {
     this.wishlistData = this.wishlistData.filter(item => item.id != $event.id);
     if(this.wishlistData.length == 0) this.enableView = false;
     localStorage.setItem('wishlist', JSON.stringify(this.wishlistData));
     this.openSnackBar('Deleted from wishlist', 'pizza-party');
   }
 
-  addtoPersonallist($event) {
+  addtoPersonallist($event: PokemonDetailLocalStorage) {
     let personallist = JSON.parse(localStorage.getItem('personallist'));
     if(personallist != null){
       let afterListfilter = personallist.filter(item => item.id == $event.id);

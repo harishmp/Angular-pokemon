@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PokemonMoves, PokemonStats, PokemonDetailbyID } from 'src/app/typed';
 import { DataService } from 'src/services/data.service';
 import { NavigationService } from 'src/services/navigation.service';
 
@@ -11,19 +12,14 @@ import { NavigationService } from 'src/services/navigation.service';
 export class PokedetailComponent implements OnInit {
 
   // mat-progress-bar
-  color = 'primary';
-  mode = 'determinate';
-  value = 50;
-  bufferValue = 75;
+  color: string = 'primary';
+  mode: string = 'determinate';
+  value: number;
+  bufferValue: number = 75;
 
-  pokemonDetails: any = '';
-  pokemonImg = '';
-  pokemonImgbig = '';
-  pokemonType = [];
-  gameindex;
-
-  resultmove = [];
-  resultstat = []
+  pokemonDetails: PokemonDetailbyID;
+  resultmove = new Array<PokemonMoves>();
+  resultstat = new Array<PokemonStats>();
   enableView = false;
   isLoading = false;
 
@@ -35,15 +31,24 @@ export class PokedetailComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getPokemondetail(id) {
+  getPokemondetail(id: number) {
       this.isLoading = true;
-      this.dataService.getPokemons(id).subscribe((response: any) => {   
-        this.pokemonDetails = response.json();
+      this.dataService.getPokemons(id).subscribe((response: any) => { 
+        this.pokemonDetails = new PokemonDetailbyID( 
+          response.name,
+          response.id,
+          response.sprites,
+          response.dream_world,
+          response.types,
+          response.moves,
+          response.stats,
+          response.height,
+          response.weight,
+          response.order,
+          response.base_experience
+        )
         this.enableView = true;
         this.isLoading = false;
-        this.pokemonImg = this.pokemonDetails.sprites.front_default;
-        this.pokemonImgbig = this.pokemonDetails.sprites.other.dream_world.front_default;
-        this.pokemonType = this.pokemonDetails['types'][0].type.name;
         this.getMoves(this.pokemonDetails);
         this.getStats(this.pokemonDetails);
       },
@@ -57,14 +62,26 @@ export class PokedetailComponent implements OnInit {
 
   getMoves(data) {
     data.moves.forEach(responsemove => {
-      this.dataService.getPokeMovesStats(responsemove.move.url).subscribe((result: any) => this.resultmove.push(result.json()),
+      this.dataService.getPokeMoves(responsemove.move.url).subscribe((movesResponse: any) => {
+        this.resultmove.push(new PokemonMoves( 
+          movesResponse.name,
+          movesResponse.type,
+          movesResponse.accuracy)
+        );
+      },
       err => console.log('In Error Block---', err._body + ' ' + err.status));
     });
   }
 
   getStats(data) {
     data.stats.forEach(responsestat => {
-      this.dataService.getPokeMovesStats(responsestat.stat.url).subscribe((result: any) => this.resultstat.push(result.json()),
+      this.dataService.getPokeStats(responsestat.stat.url).subscribe((statsResponse: any) => {
+        this.resultstat.push(new PokemonStats( 
+          statsResponse.name,
+          statsResponse.id,
+          statsResponse.game_index)
+        );
+      },
       err => console.log('In Error Block---', err._body + ' ' + err.status));
     });
   }
